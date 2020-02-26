@@ -23,7 +23,7 @@ pipeline{
             steps{
                 sh "docker run --name teds -d -p 9191:9191 --network jenkins_default teds"
                 sh "./testConnection.sh"
-                sh "docker rm -f ted"
+                sh "docker rm -f teds"
             }
             post {
                 failure {
