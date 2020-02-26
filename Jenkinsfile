@@ -21,7 +21,17 @@ pipeline{
         }
         stage("Test"){
             steps{
-                sh "docker run -d -p 9191:9191 teds"
+                sh "docker run --name ted -d -p 9191:9191 teds"
+                sh "./testConnection.sh"
+                sh "docker rm -f ted"
+            }
+            post {
+                failure {
+                    updateGitlabCommitStatus name: 'Test', state: 'failed'
+                }
+                success {
+                    updateGitlabCommitStatus name: 'Test', state: 'success'
+                }
             }
         }
     }
